@@ -7,6 +7,7 @@ export type AccountType = {
 
 export type AssetType = {
   id?: number;
+  accountId?: number;
   symbol: string;
   description: string;
   type: "stock" | "crypto";

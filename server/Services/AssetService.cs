@@ -3,16 +3,19 @@ using System.Threading.Tasks;
 using MyPostgresApi.Models;
 using Npgsql;
 using MyPostgresApi.Utility;
+using MyPostgresApi.External;
 
 namespace MyPostgresApi.Services
 {
   public class AssetService
   {
     private readonly PostgresService _postgres;
+    private readonly GoogleFinanceClient _google;
 
-    public AssetService(PostgresService postgres)
+    public AssetService(PostgresService postgres, GoogleFinanceClient google)
     {
       _postgres = postgres;
+      _google = google;
     }
 
     public async Task<List<Asset>> GetAssetsAsync()
@@ -74,8 +77,8 @@ namespace MyPostgresApi.Services
       var asset = await GetAssetByIdAsync(assetId);
       if (asset == null) return null;
 
-      // get price via api
-      return -1;
+      var price = await _google.GetPriceAsync(asset.Symbol, asset.Type);
+      return price;
     }
 
     public async Task AddAssetAsync(Asset asset)

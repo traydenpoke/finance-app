@@ -53,7 +53,14 @@ function App() {
               />
               <Route
                 path="/crypto"
-                element={<Crypto accounts={accounts} setAccounts={setAccounts} />}
+                element={
+                  <Crypto
+                    accounts={accounts}
+                    setAccounts={setAccounts}
+                    assets={assets}
+                    setAssets={setAssets}
+                  />
+                }
               />
             </Routes>
           </div>

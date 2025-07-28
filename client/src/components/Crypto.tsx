@@ -1,8 +1,14 @@
 import { Button } from "./ui/button";
-import type { AccountProps } from "@/types";
+import type { AccountProps, AssetProps } from "@/types";
 import AddAccount from "./AddAccount";
+import DisplayAccounts from "./DisplayAccounts";
 
-export default function Crypto({ accounts, setAccounts }: AccountProps) {
+export default function Crypto({
+  accounts,
+  setAccounts,
+  assets,
+  setAssets,
+}: AccountProps & AssetProps) {
   const cryptoAccounts = accounts.filter((acc) => acc.type === "crypto");
 
   return (
@@ -12,6 +18,13 @@ export default function Crypto({ accounts, setAccounts }: AccountProps) {
       <Button onClick={() => console.log(cryptoAccounts)}>get crypto</Button>
 
       <AddAccount accounts={accounts} setAccounts={setAccounts} type="crypto" />
+
+      <DisplayAccounts
+        accounts={cryptoAccounts}
+        assets={assets}
+        setAssets={setAssets}
+        type="crypto"
+      />
     </div>
   );
 }

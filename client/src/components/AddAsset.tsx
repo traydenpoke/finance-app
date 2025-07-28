@@ -19,15 +19,15 @@ type AddAssetProps = {
   assets: AssetType[];
   setAssets: React.Dispatch<React.SetStateAction<AssetType[]>>;
   type: AssetType["type"];
-  accountID: number;
+  accountId: number;
 };
 
-export default function AddAsset({ assets, setAssets, type, accountID }: AddAssetProps) {
+export default function AddAsset({ assets, setAssets, type, accountId }: AddAssetProps) {
   const [symbol, setSymbol] = useState<string>("");
   const [description, setDescription] = useState<string>("");
 
   async function handleAddAsset() {
-    const newAsset: AssetType = await addAsset({ id: accountID, symbol, description, type });
+    const newAsset: AssetType = await addAsset({ id: accountId, symbol, description, type });
     setAssets([...assets, newAsset]);
     console.log(newAsset);
   }

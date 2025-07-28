@@ -1,4 +1,5 @@
 using MyPostgresApi.Services;
+using MyPostgresApi.External;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,8 @@ builder.Services.AddCors(options =>
 builder.Services.AddSingleton<PostgresService>();
 builder.Services.AddScoped<AccountService>();
 builder.Services.AddScoped<AssetService>();
+builder.Services.AddHttpClient<GoogleFinanceClient>();
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
