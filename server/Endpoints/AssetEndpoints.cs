@@ -1,8 +1,5 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Routing;
 using MyPostgresApi.Models;
 using MyPostgresApi.Services;
-using System.Threading.Tasks;
 
 namespace MyPostgresApi.Endpoints
 {

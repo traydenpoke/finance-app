@@ -1,8 +1,5 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Routing;
 using MyPostgresApi.Models;
 using MyPostgresApi.Services;
-using System.Threading.Tasks;
 
 namespace MyPostgresApi.Endpoints
 {
@@ -33,7 +30,6 @@ namespace MyPostgresApi.Endpoints
       app.MapPost("/accounts", async (Account newAccount, AccountService service) =>
       {
         await service.AddAccountAsync(newAccount);
-        Console.WriteLine(newAccount.Id);
         return Results.Created($"/accounts/{newAccount.Id}", newAccount);
       })
       .WithName("AddAccount")

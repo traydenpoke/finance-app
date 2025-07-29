@@ -1,6 +1,5 @@
-using Microsoft.Extensions.Configuration;
 using Npgsql;
-using System.Threading.Tasks;
+using MyPostgresApi.Utility;
 
 namespace MyPostgresApi.Services
 {
@@ -58,5 +57,69 @@ namespace MyPostgresApi.Services
         );
       ");
     }
+
+    // Generic return all rows of table
+    public async Task<List<T>> GetTableAsync<T>(string tableName) where T : IDbModel, new()
+    {
+      var result = new List<T>();
+      var sql = $"SELECT * from {tableName}";
+
+      await using var conn = new NpgsqlConnection(_connectionString);
+      await conn.OpenAsync();
+
+      await using var cmd = new NpgsqlCommand(sql, conn);
+      await using var reader = await cmd.ExecuteReaderAsync();
+
+      while (await reader.ReadAsync())
+      {
+        var instance = new T();
+        instance.LoadFromReader(reader);
+        result.Add(instance);
+      }
+
+      return result;
+    }
+
+    // Generic return specific table row by id
+    public async Task<T?> GetByIdAsync<T>(string tableName, string id) where T : IDbModel, new()
+    {
+      if (!Helpers.IsInteger(id)) return default;
+
+      var sql = $"SELECT * from {tableName} WHERE id = @id";
+
+      await using var conn = new NpgsqlConnection(_connectionString);
+      await conn.OpenAsync();
+
+      await using var cmd = new NpgsqlCommand(sql, conn);
+      cmd.Parameters.AddWithValue("id", int.Parse(id));
+
+      await using var reader = await cmd.ExecuteReaderAsync();
+
+      if (await reader.ReadAsync())
+      {
+        var instance = new T();
+        instance.LoadFromReader(reader);
+        return instance;
+      }
+
+      return default;
+    }
+
+    // Generic insert
+    public async Task AddAsync<T>(T model, string tableName) where T : IDbModel
+    {
+      var (columns, parameters, values) = model.GetInsertDef();
+      var sql = $"INSERT INTO {tableName} ({columns}) VALUES ({parameters}) RETURNING id";
+
+      await using var conn = new NpgsqlConnection(_connectionString);
+      await conn.OpenAsync();
+
+      await using var cmd = new NpgsqlCommand(sql, conn);
+      cmd.Parameters.AddRange(values.ToArray());
+
+      var result = await cmd.ExecuteScalarAsync();
+      model.SetId(result);
+    }
+
   }
 }
