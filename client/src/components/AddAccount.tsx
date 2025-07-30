@@ -12,8 +12,8 @@ import {
 import { Label } from "@radix-ui/react-label";
 import { Input } from "./ui/input";
 import { useState } from "react";
-import addAccount from "@/api/addAccount";
 import type { AccountType } from "@/types";
+import addItem from "@/api/addItem";
 
 type AddAccountProps = {
   accounts: AccountType[];
@@ -31,7 +31,7 @@ export default function AddAccount({ accounts, setAccounts, type }: AddAccountPr
       return;
     }
 
-    const newAccount: AccountType = await addAccount({
+    const newAccount: AccountType = await addItem("accounts", {
       description,
       type,
       balance: Number(balance),

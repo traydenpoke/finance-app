@@ -17,7 +17,6 @@ namespace MyPostgresApi.Endpoints
       .WithOpenApi();
 
       // Get account by id
-      // Get all accounts
       app.MapGet("/accounts/{id}", async (string id, AccountService service) =>
       {
         var accountData = await service.GetAccountByIdAsync(id);

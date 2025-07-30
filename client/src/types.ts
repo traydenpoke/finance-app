@@ -22,3 +22,5 @@ export type AssetProps = {
   assets: AssetType[];
   setAssets: React.Dispatch<React.SetStateAction<AssetType[]>>;
 };
+
+export type TableTypes = "accounts" | "assets" | "transactions";

@@ -13,7 +13,7 @@ import { Label } from "@radix-ui/react-label";
 import { Input } from "./ui/input";
 import { useState } from "react";
 import type { AssetType } from "@/types";
-import addAsset from "@/api/addAsset";
+import addItem from "@/api/addItem";
 
 type AddAssetProps = {
   assets: AssetType[];
@@ -27,7 +27,12 @@ export default function AddAsset({ assets, setAssets, type, accountId }: AddAsse
   const [description, setDescription] = useState<string>("");
 
   async function handleAddAsset() {
-    const newAsset: AssetType = await addAsset({ id: accountId, symbol, description, type });
+    const newAsset: AssetType = await addItem("assets", {
+      accountId,
+      symbol,
+      description,
+      type,
+    });
     setAssets([...assets, newAsset]);
     console.log(newAsset);
   }
