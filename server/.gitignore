@@ -5,3 +5,5 @@ server.csproj
 
 obj
 bin
+
+launchSettings.json
