@@ -1,5 +1,5 @@
-import { Button } from "./ui/button";
-import type { AccountType, AssetType } from "@/types";
+import { Button } from './ui/button';
+import type { AccountType, AssetType, PriceType } from '@/types';
 import {
   Table,
   TableBody,
@@ -7,14 +7,16 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from '@/components/ui/table';
 
 export default function Home({
   accounts,
   assets,
+  assetPrices,
 }: {
   accounts: AccountType[];
   assets: AssetType[];
+  assetPrices: PriceType;
 }) {
   return (
     <div>
@@ -22,6 +24,9 @@ export default function Home({
 
       <Button onClick={() => console.log(accounts)}>get all accounts</Button>
       <Button onClick={() => console.log(assets)}>get all assets</Button>
+      <Button onClick={() => console.log(assetPrices)}>
+        get all asset prices
+      </Button>
 
       {accounts.length ? (
         <Table>

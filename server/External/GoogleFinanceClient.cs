@@ -21,7 +21,6 @@ public class GoogleFinanceClient
   {
     var suffix = type == "stock" ? ":TSE" : "-CAD";
     var url = $"https://www.google.com/finance/quote/{symbol}{suffix}";
-    Console.WriteLine("", url, suffix);
 
     var res = await _http.GetAsync(url);
     if (!res.IsSuccessStatusCode)
@@ -47,7 +46,6 @@ public class GoogleFinanceClient
       }
     }
 
-    Console.WriteLine("Price not found or parse failed.");
     return null;
   }
 }

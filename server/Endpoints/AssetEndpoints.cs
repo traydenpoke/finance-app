@@ -16,7 +16,6 @@ namespace MyPostgresApi.Endpoints
       .WithName("GetAssets")
       .WithOpenApi();
 
-
       // Get asset by id
       app.MapGet("/assets/{id}", async (string id, AssetService service) =>
       {
@@ -35,6 +34,14 @@ namespace MyPostgresApi.Endpoints
       .WithName("GetAssetPriceById")
       .WithOpenApi();
 
+      // Get all asset prices
+      app.MapGet("/assets/prices", async (AssetService service) =>
+      {
+        var priceData = await service.GetAssetPricesAsync();
+        return Results.Ok(priceData);
+      })
+      .WithName("GetAssetPrices")
+      .WithOpenApi();
 
       // Create an asset
       app.MapPost("/assets", async (Asset newAsset, AssetService service) =>

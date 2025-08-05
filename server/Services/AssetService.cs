@@ -36,6 +36,32 @@ namespace MyPostgresApi.Services
       return price;
     }
 
+    public async Task<SortedDictionary<string, float>> GetAssetPricesAsync()
+    {
+      // Get all unique symbols
+      var sql = "SELECT DISTINCT symbol, type FROM assets";
+
+      await using var conn = new NpgsqlConnection(_postgres.ConnectionString);
+      await conn.OpenAsync();
+
+      await using var cmd = new NpgsqlCommand(sql, conn);
+      await using var reader = await cmd.ExecuteReaderAsync();
+
+      // Read one by one and get price for each one
+      var prices = new SortedDictionary<string, float>();
+      while (await reader.ReadAsync())
+      {
+        var symbol = reader.GetString(0);
+        var type = reader.GetString(1);
+        var price = await _google.GetPriceAsync(symbol, type);
+        if (price == null) continue;
+
+        prices.Add(symbol, (float)price);
+      }
+
+      return prices;
+    }
+
     public async Task AddAssetAsync(Asset asset)
     {
       await _postgres.AddAsync(asset, "assets");

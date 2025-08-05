@@ -1,7 +1,7 @@
 export type AccountType = {
   id?: number;
   description: string;
-  type: "cash" | "crypto" | "stock";
+  type: 'cash' | 'crypto' | 'stock';
   balance: number;
 };
 
@@ -10,8 +10,10 @@ export type AssetType = {
   accountId?: number;
   symbol: string;
   description: string;
-  type: "stock" | "crypto";
+  type: 'stock' | 'crypto';
 };
+
+export type PriceType = Record<string, number> | null;
 
 export type AccountProps = {
   accounts: AccountType[];
@@ -23,4 +25,4 @@ export type AssetProps = {
   setAssets: React.Dispatch<React.SetStateAction<AssetType[]>>;
 };
 
-export type TableTypes = "accounts" | "assets" | "transactions";
+export type TableTypes = 'accounts' | 'assets' | 'transactions';
