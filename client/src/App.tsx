@@ -1,22 +1,25 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import "./index.css";
-import Header from "./components/Header";
-import { ThemeProvider } from "./components/ThemeProvider";
-import Home from "./components/Home";
-import Cash from "./components/Cash";
-import Stocks from "./components/Stocks";
-import Crypto from "./components/Crypto";
-import { useEffect, useState } from "react";
-import type { AccountType, AssetType } from "./types";
-import getTable from "./api/getTable";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import './index.css';
+import Header from './components/Header';
+import { ThemeProvider } from './components/ThemeProvider';
+import Home from './components/Home';
+import Cash from './components/Cash';
+import Stocks from './components/Stocks';
+import Crypto from './components/Crypto';
+import { useEffect, useState } from 'react';
+import type { AccountType, AssetType, PriceType } from './types';
+import getTable from './api/getTable';
+import getAssetPrices from './api/getAssetPrices';
 
 function App() {
   const [accounts, setAccounts] = useState<AccountType[]>([]);
   const [assets, setAssets] = useState<AssetType[]>([]);
+  const [assetPrices, setAssetPrices] = useState<PriceType>(null);
 
   const initVals = async () => {
-    setAccounts(await getTable("accounts"));
-    setAssets(await getTable("assets"));
+    setAccounts(await getTable('accounts'));
+    setAssets(await getTable('assets'));
+    setAssetPrices(await getAssetPrices());
   };
 
   useEffect(() => {
@@ -24,19 +27,28 @@ function App() {
   }, []);
 
   return (
-    <main className="">
-      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+    <main className=''>
+      <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
         <Router>
           <Header />
-          <div className="pt-16 m-auto w-fit">
+          <div className='pt-16 m-auto w-fit'>
             <Routes>
-              <Route path="/" element={<Home accounts={accounts} assets={assets} />} />
               <Route
-                path="/cash"
+                path='/'
+                element={
+                  <Home
+                    accounts={accounts}
+                    assets={assets}
+                    assetPrices={assetPrices}
+                  />
+                }
+              />
+              <Route
+                path='/cash'
                 element={<Cash accounts={accounts} setAccounts={setAccounts} />}
               />
               <Route
-                path="/stocks"
+                path='/stocks'
                 element={
                   <Stocks
                     accounts={accounts}
@@ -47,7 +59,7 @@ function App() {
                 }
               />
               <Route
-                path="/crypto"
+                path='/crypto'
                 element={
                   <Crypto
                     accounts={accounts}
